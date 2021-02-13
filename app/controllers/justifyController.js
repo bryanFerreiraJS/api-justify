@@ -48,7 +48,7 @@ const justifyController = {
             numberOfSpaceCharacters = 80 - cloneOfCurrentExplodedLine.join('').length
             let extraSpaces = numberOfSpaceCharacters % numberOfSpacingsBetweenWordsInCurrentExplodedLine
             const numberOfSpaceCharactersPerSpacing = Math.floor(numberOfSpaceCharacters / numberOfSpacingsBetweenWordsInCurrentExplodedLine)
-            pastedLine = ""
+            pastedLine = ''
             for (let indexOfCurrentWord = 0; indexOfCurrentWord < cloneOfCurrentExplodedLine.length; indexOfCurrentWord++) {
               let addOneSpace = false
               if (extraSpaces > 0) {
@@ -92,6 +92,7 @@ const justifyController = {
       }
       textJustified = textJustified.map(elem => elem.join('\r\n'))
       textJustified = textJustified.join('\r\n')
+      res.type('text/plain')
       res.send(textJustified)
     } catch (error) {
       next(error)

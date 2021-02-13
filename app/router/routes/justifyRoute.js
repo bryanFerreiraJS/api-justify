@@ -1,4 +1,3 @@
-
 const justifyController = require('../../controllers/justifyController')
 
 module.exports = function(router) {
