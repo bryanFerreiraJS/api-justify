@@ -1,5 +1,5 @@
 const tokenController = require('../../controllers/tokenController')
 
-module.exports = function(router) {
+module.exports = (router) => {
   router.post('/token', tokenController.getUserAndSetToken)
 }

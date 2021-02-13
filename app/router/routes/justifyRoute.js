@@ -1,5 +1,5 @@
 const justifyController = require('../../controllers/justifyController')
 
-module.exports = function(router) {
+module.exports = (router) => {
   router.post('/justify', justifyController.returnJustifiedText)
 }

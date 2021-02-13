@@ -1,4 +1,4 @@
-// la Promise n'est pas forcément résolue au moment où on l'importe, mais c'est pas grave, on en a pas besoin tout de suite
+// The Promise isn't necessarily resolved when we import it, but it doesn't matter, we don't need it right away.
 const mongodb = require('../modules/mongodb')
 
 const { ErrorHandler } = require('../middlewares/error')
@@ -16,23 +16,35 @@ const tokenController = {
 
       const userEmail = req.body.email
 
-      // Maintenant, on a besoin de la db, c'est le bon moment pour l'attendre si elle n'est pas encore opérationnelle.
-      // Après l'avoir attendue, on appelle findOne sur la collection pour récupérer notre user et on attend à nouveau, le document, cette fois-ci
+      // Now we need the database, it's the right time to wait for it if it's not yet operational.
+      // After waiting for it, we call the findOne method on the collection to retrieve the user and we wait again, this time for the document.
 
       const user = await (await mongodb)
         .collection(MONGODB_COLLECTION_NAME)
         .findOne({email: userEmail})
 
-      // Si je ne trouve pas de client dans la collection, je renvoie une erreur 404
       if (!user) {
         throw new ErrorHandler(404, 'Response code 404 (User Not Found)')
+      } 
+      // 
+      else if (user.timestampOfJWT) {
+        throw new ErrorHandler(403, 'Response code 403 (A Token Has Already Been Generated For This User. Contact The Administrator To Generate A New Token.)')
       } else {
         const payload = {
           email: user.email
         }
-        const token = jwt.sign(payload, SECRET_KEY_JWT, {
-          expiresIn: '24h'
-        })
+        const token = jwt.sign(payload, SECRET_KEY_JWT)
+        const nowTimestamp = Math.floor(Date.now() / 1000)
+
+        await (await mongodb)
+          .collection(MONGODB_COLLECTION_NAME)
+          .updateOne({ email: userEmail }, {
+            $set: {
+              'timestampOfLastResetOfRateLimit': nowTimestamp,
+              'timestampOfJWT': nowTimestamp
+            }
+          })
+        
         res.status(200).json(({
           status: 'Success',
           statusCode: 200,

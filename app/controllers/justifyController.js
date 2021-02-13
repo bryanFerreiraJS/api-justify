@@ -2,10 +2,10 @@ const { ErrorHandler } = require('../middlewares/error')
 
 const justifyController = {
 
-  returnJustifiedText: async (req, res, next) => {
+  returnJustifiedText: (req, res, next) => {
     try {
 
-      function textJustification(wordsOfParagraph) {
+      const textJustification = (wordsOfParagraph) => {
 
         // If a word is longer than 80 characters, we throw an error.
         for (const currentWord of wordsOfParagraph) {
@@ -68,7 +68,7 @@ const justifyController = {
         return explodedLinesOfParagraph
       }
 
-      function appendSpaces(string, numberOfSpaceCharacters) {
+      const appendSpaces = (string, numberOfSpaceCharacters) => {
         for (let currentSpaceCharacter = 0; currentSpaceCharacter < numberOfSpaceCharacters; currentSpaceCharacter++) {
           string += ' '
         }
