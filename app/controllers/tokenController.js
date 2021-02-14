@@ -28,7 +28,7 @@ const tokenController = {
       } 
       // An administrator has reinitialized the token
       else if (user.timestampOfJWT) {
-        throw new ErrorHandler(403, 'Response code 403 (A Token Has Already Been Generated For This User. Contact The Administrator To Generate A New Token)')
+        throw new ErrorHandler(403, 'Response code 403 (A Token Has Already Been Generated For This User)')
       } else {
         const payload = {
           email: user.email

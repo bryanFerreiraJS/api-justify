@@ -75,10 +75,9 @@ const justifyController = {
         return string
       }
 
-      res.type('text/plain')
-      
       // If text only contains whitespace (ie. spaces, tabs or line breaks)', send a empty string
       if (!req.body.replace(/\s/g, '').length) {
+        res.type('text/plain')
         res.status(200).send('')
       }
 
@@ -100,6 +99,7 @@ const justifyController = {
       }
       textJustified = textJustified.map(elem => elem.join('\r\n'))
       textJustified = textJustified.join('\r\n')
+      res.type('text/plain')
       res.status(200).send(textJustified)
     } catch (error) {
       next(error)
