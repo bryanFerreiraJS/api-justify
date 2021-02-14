@@ -93,3 +93,8 @@ Dans le corps de la requête, renseignez le texte à justifier.
 On vous retournera un texte justifié d'une largeur de 80 caractères.
 
 J'ai essayé de m'approcher au maximum de la syntaxe de l'exemple fourni avec le test (Un retour chariot n'est pas pris en compte. Deux retours chariots consécutifs provoque un retour chariot sur le texte justifié).
+
+##### Tests unitaires
+
+Les tests unitaires ont été effectué à l'aide de Mocha, Chai et Supertest.
+Après avoir installé les dépendances, vous pouvez lancer les tests depuis la racide du projet grâce à la commande **'./node_modules/.bin/mocha'**, ou simplement grâce à la commande **'mocha'** si vous l'avez déjà installé sur votre machine.
