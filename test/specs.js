@@ -42,6 +42,35 @@ describe('POST /admin/user', () => {
   })
 })
 
+describe('GET /admin/user', () => {
+
+  it('Get A New User', async () => {
+    const response = await fetchAPI
+      .get('/admin/user')
+      .send('email=test@test.com')
+      .then(response => {
+        return response
+      })
+    expect(response.body.status, 'Status Check').to.equal('Success')
+    expect(response.body.statusCode, 'StatusCode Check').to.equal(200)
+    expect(response.body.message, 'Message Check').to.equal('Response code 200 (User Found)')
+    expect(response.body.user, 'Token Check').to.be.a('object')
+    expect(response.body.user.email, 'Message Check').to.equal('test@test.com')
+  })
+
+  it("Attempt To Get A User Who Doesn't Exist", async () => {
+    const response = await fetchAPI
+      .get('/admin/user')
+      .send('email=iDoNotExist@test.com')
+      .then(response => {
+        return response
+      })
+    expect(response.body.status, 'Status Check').to.equal('Error')
+    expect(response.body.statusCode, 'StatusCode Check').to.equal(404)
+    expect(response.body.message, 'Message Check').to.equal('Response code 404 (User Not Found)')
+  })
+})
+
 describe('POST /token', () => {
 
   it('Request A Token When No Token Has Already Been Assigned', async () => {
@@ -169,6 +198,74 @@ describe('PATCH /admin/user/token', () => {
     expect(response.body.status, 'Status Check').to.equal('Error')
     expect(response.body.statusCode, 'StatusCode Check').to.equal(403)
     expect(response.body.message, 'Message Check').to.equal('Response code 403 (An Administrator Has Reset Your Account. Please Request A New Token)')
+  })
+})
+
+describe('Check Email', () => {
+
+  it('GET /admin/user', async () => {
+    const response = await fetchAPI
+      .get('/admin/user')
+      .send('email=itIsNotAnEmail')
+      .then(response => {
+        return response
+      })
+
+    expect(response.body.status, 'Status Check').to.equal('Error')
+    expect(response.body.statusCode, 'StatusCode Check').to.equal(400)
+    expect(response.body.message, 'Message Check').to.equal('Response code 400 (You Need To Enter An Email Address)')
+  })
+
+  it('POST /admin/user', async () => {
+    const response = await fetchAPI
+      .post('/admin/user')
+      .send('email=itIsNotAnEmail')
+      .then(response => {
+        return response
+      })
+
+    expect(response.body.status, 'Status Check').to.equal('Error')
+    expect(response.body.statusCode, 'StatusCode Check').to.equal(400)
+    expect(response.body.message, 'Message Check').to.equal('Response code 400 (You Need To Enter An Email Address)')
+  })
+
+  it('POST /token', async () => {
+    const response = await fetchAPI
+      .post('/token')
+      .send('email=itIsNotAnEmail')
+      .then(response => {
+        return response
+      })
+
+    expect(response.body.status, 'Status Check').to.equal('Error')
+    expect(response.body.statusCode, 'StatusCode Check').to.equal(400)
+    expect(response.body.message, 'Message Check').to.equal('Response code 400 (You Need To Enter An Email Address)')
+  })
+
+  it('PATCH /admin/user/token', async () => {
+    const response = await fetchAPI
+      .patch('/admin/user/token')
+      .send('email=itIsNotAnEmail')
+      .then(response => {
+        return response
+      })
+
+    expect(response.body.status, 'Status Check').to.equal('Error')
+    expect(response.body.statusCode, 'StatusCode Check').to.equal(400)
+    expect(response.body.message, 'Message Check').to.equal('Response code 400 (You Need To Enter An Email Address)')
+  })
+
+  it('DELETE /admin/user', async () => {
+    const response = await fetchAPI
+      .delete('/admin/user')
+      .send('email=itIsNotAnEmail')
+      .then(response => {
+        return response
+      })
+
+    expect(response.body.status, 'Status Check').to.equal('Error')
+    expect(response.body.statusCode, 'StatusCode Check').to.equal(400)
+    expect(response.body.message, 'Message Check').to.equal('Response code 400 (You Need To Enter An Email Address)')
   })
 })
 
