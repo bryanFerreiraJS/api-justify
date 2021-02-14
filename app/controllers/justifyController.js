@@ -75,6 +75,13 @@ const justifyController = {
         return string
       }
 
+      res.type('text/plain')
+      
+      // If text only contains whitespace (ie. spaces, tabs or line breaks)', send a empty string
+      if (!req.body.replace(/\s/g, '').length) {
+        res.status(200).send('')
+      }
+
       const textSeparatedByLineBreaks = req.body.split(/\n/)
       let paragraphsOfText = ['']
       let textJustified = []
@@ -88,12 +95,12 @@ const justifyController = {
         }
       })
       for (paragraph of paragraphsOfText) {
+        paragraph = paragraph.trim()
         textJustified.push(textJustification(paragraph.split(/\s/)))
       }
       textJustified = textJustified.map(elem => elem.join('\r\n'))
       textJustified = textJustified.join('\r\n')
-      res.type('text/plain')
-      res.send(textJustified)
+      res.status(200).send(textJustified)
     } catch (error) {
       next(error)
     }

@@ -9,13 +9,17 @@ const checkRateLimit = async (req, res, next) => {
   try {
 
     const countWords = (string) => {
-      // Exclude the start and end spaces of a string. The following line of regex expression will remove the start and end spaces of the given string.
-      string = string.replace(/(^\s*)|(\s*$)/gi, '')
+      // Exclude the start and end spaces of a string.
+      string = string.trim()
       // Reduce multiple spaces to a single space.
       string = string.replace(/[ ]{2,}/gi, ' ')
       // Exclude a new line with a start spacing.
       string = string.replace(/\n /, '\n')
       return string.split(' ').length
+    }
+
+    if (typeof req.body === 'object') {
+      throw new ErrorHandler(403, 'Response code 403 (Text Is Not Supplied)')
     }
 
     const nowTimestamp = Math.floor(Date.now() / 1000)
