@@ -24,11 +24,11 @@ const tokenController = {
         .findOne({email: userEmail})
 
       if (!user) {
-        throw new ErrorHandler(404, 'Response code 404 (User Not Found)')
+        throw new ErrorHandler(404, "Response code 404 (This Email Isn't Registered In Our Database)")
       } 
-      // 
+      // An administrator has reinitialized the token
       else if (user.timestampOfJWT) {
-        throw new ErrorHandler(403, 'Response code 403 (A Token Has Already Been Generated For This User. Contact The Administrator To Generate A New Token.)')
+        throw new ErrorHandler(403, 'Response code 403 (A Token Has Already Been Generated For This User. Contact The Administrator To Generate A New Token)')
       } else {
         const payload = {
           email: user.email
@@ -40,17 +40,18 @@ const tokenController = {
           .collection(MONGODB_COLLECTION_NAME)
           .updateOne({ email: userEmail }, {
             $set: {
+              'rateLimitPerDay': 80000,
               'timestampOfLastResetOfRateLimit': nowTimestamp,
               'timestampOfJWT': nowTimestamp
             }
           })
         
-        res.status(200).json(({
+        res.status(200).json({
           status: 'Success',
-          statusCode: 200,
-          message: 'Response code 200 (Token Sended)',
+          statusCode: 201,
+          message: 'Response code 201 (Token Created)',
           token,
-        }))
+        })
       }
     } catch (error) {
       next(error)

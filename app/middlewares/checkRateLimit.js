@@ -39,7 +39,7 @@ const checkRateLimit = async (req, res, next) => {
 
     // Rate Limit Checker
     if (user.rateLimitPerDay - numberOfWordsInText < 0) {
-      throw new ErrorHandler(402, "Response code 402 (Payment Required)")
+      throw new ErrorHandler(402, 'Response code 402 (Payment Required)')
     } else {
       await (await mongodb)
         .collection(MONGODB_COLLECTION_NAME)
