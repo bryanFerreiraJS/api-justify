@@ -4,7 +4,7 @@
 
 ##### À l'aide de votre outil de test d'API préféré, vous devez commencer par créer un utilisateur via la route `POST admin/user/`
 
-Dans le corps de la requête renseignez la clé **'email'** d'une valeur correspondante à votre adresse email.
+Dans le corps de la requête, renseignez la clé **'email'** d'une valeur correspondante à votre adresse email.
 
 Votre outil de test est censé vous afficher cette réponse :
 ```json
@@ -54,7 +54,7 @@ Si vous renseignez l'email de l'utilisateur dans le body, on vous retournera l'o
 }
 ```
 
-Vous pourrez donc récupérer un nouveau JWT via la route `POST token/` (l'ancien JWT sera caduque, garantissant le caractère unique du JWT de l'utilisateur).
+Vous pourrez donc récupérer un nouveau JWT via la route `POST token/` (l'ancien JWT sera caduc, garantissant le caractère unique du JWT de l'utilisateur).
 
 ##### Vous pouvez récupérer un utilisateur via la route `GET admin/user/`
 
@@ -84,7 +84,7 @@ Si vous renseignez l'email de l'utilisateur à supprimer dans le body et qu'il e
 }
 ```
 
-##### Vous pouvez commencer à justifier du texte via la route `POST justify/`
+##### Maintenant qu'un token vous est attribué, vous pouvez commencer à justifier du texte via la route `POST justify/`
 
 Le JWT devra être renseigné dans l'en-tête **'Authorization'**, précédé de la chaîne de caractères **Bearer**.
 L'en-tête **'Content-Type'** de la requête doit être de type **'text/plain'**.
