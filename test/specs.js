@@ -186,7 +186,7 @@ describe('DELETE /admin/user', () => {
     expect(response.body.message, 'Message Check').to.equal('Response code 200 (User Deleted)')
   })
 
-  it("Trying to remove a user that doesn't exist", async () => {
+  it("Trying To Remove A User That Doesn't Exist", async () => {
     const response = await fetchAPI
       .delete('/admin/user')
       .send('email=test@test.com')
